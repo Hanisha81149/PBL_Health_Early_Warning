@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Community Health Monitoring</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8f7;
+            color: #173b3a;
+            line-height: 1.5;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        header {
+            background: linear-gradient(135deg, #003b3b, #075e54);
+            color: white;
+            padding: 28px 6%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-content {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .header-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: #c9e7e3;
+            font-size: 15px;
+        }
+
+        /* ---------------- MAIN ---------------- */
+
+        main {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 6px;
+            color: #063f3d;
+        }
+
+        .section-description {
+            color: #66817e;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        /* ---------------- SUMMARY CARDS ---------------- */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.08);
+            border: 1px solid #e1eeeb;
+        }
+
+        .card-icon {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .card-label {
+            font-size: 13px;
+            color: #708b88;
+        }
+
+        .card-value {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 4px;
+            color: #064d49;
+        }
+
+        /* ---------------- RISK OVERVIEW ---------------- */
+
+        .district-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .district-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e1eeeb;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.06);
+        }
+
+        .district-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .district-name {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #426a66;
+        }
+
+        .progress-background {
+            height: 9px;
+            background: #e5efed;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .low-bar {
+            background: #36a269;
+        }
+
+        .medium-bar {
+            background: #d59b35;
+        }
+
+        .high-bar {
+            background: #d95757;
+        }
+
+        /* ---------------- BADGES ---------------- */
+
+        .badge {
+            display: inline-block;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .badge-low {
+            background: #e3f5ea;
+            color: #277a4d;
+        }
+
+        .badge-medium {
+            background: #fff2d8;
+            color: #9b691d;
+        }
+
+        .badge-high {
+            background: #fde3e3;
+            color: #a43838;
+        }
+
+        /* ---------------- SYSTEM FLOW ---------------- */
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            border: 1px solid #e1eeeb;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.06);
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 1;
+        }
+
+        .flow-icon {
+            width: 62px;
+            height: 62px;
+            margin: auto;
+            border-radius: 50%;
+            background: #e6f3f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .flow-step strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .flow-arrow {
+            font-size: 22px;
+            color: #76a8a2;
+        }
+
+        /* ---------------- TABLE ---------------- */
+
+        .table-container {
+            background: white;
+            border-radius: 18px;
+            overflow-x: auto;
+            border: 1px solid #e1eeeb;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #064d49;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #edf3f2;
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ---------------- ALERT CENTER ---------------- */
+
+        .alert-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .alert-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            border: 1px solid #e1eeeb;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.06);
+        }
+
+        .alert-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .alert-card p {
+            font-size: 14px;
+            color: #607c79;
+            margin-bottom: 18px;
+        }
+
+        .alert-low {
+            border-top: 5px solid #36a269;
+        }
+
+        .alert-medium {
+            border-top: 5px solid #d59b35;
+        }
+
+        .alert-high {
+            border-top: 5px solid #d95757;
+        }
+
+        /* ---------------- BUTTON ---------------- */
+
+        .send-button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 9px;
+            background: #075e54;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .send-button:hover {
+            background: #043f3a;
+        }
+
+        /* ---------------- INFO CARDS ---------------- */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid #e1eeeb;
+            box-shadow: 0 5px 20px rgba(0, 60, 55, 0.06);
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            color: #064d49;
+        }
+
+        .info-card p {
+            color: #607c79;
+            font-size: 14px;
+        }
+
+        /* ---------------- DISCLAIMER ---------------- */
+
+        .disclaimer {
+            background: #fff8e8;
+            border: 1px solid #f0d99a;
+            padding: 18px;
+            border-radius: 14px;
+            color: #735c28;
+            font-size: 13px;
+        }
+
+        /* ---------------- TOAST ---------------- */
+
+        #toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #073f3c;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            max-width: 360px;
+            display: none;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #78908d;
+            font-size: 12px;
+        }
+
+        /* ---------------- RESPONSIVE ---------------- */
+
+        @media (max-width: 900px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .alert-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-container {
+                flex-wrap: wrap;
+            }
+
+            .flow-arrow {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .district-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-step {
+                flex-basis: 45%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+    <div class="header-content">
+
+        <span class="header-tag">
+            🏥 HEALTH MONITORING PROTOTYPE
+        </span>
+
+        <h1>
+            Smart Community Health Monitoring
+        </h1>
+
+        <p>
+            Early Warning System • Assam Pilot • Prototype
+        </p>
+
+    </div>
+</header>
+
+
+<main>
+
+    <!-- ================= SUMMARY ================= -->
+
+    <section class="section">
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <div class="card-icon">🗺️</div>
+                <div class="card-label">Districts Monitored</div>
+                <div class="card-value">
+                    {{ districts_monitored }}
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">🚨</div>
+                <div class="card-label">High Risk Districts</div>
+                <div class="card-value">
+                    {{ high_risk }}
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">⚠️</div>
+                <div class="card-label">Medium Risk Districts</div>
+                <div class="card-value">
+                    {{ medium_risk }}
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">🏥</div>
+                <div class="card-label">Total Reported Symptoms</div>
+                <div class="card-value">
+                    {{ total_symptoms }}
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DISTRICT RISK ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            District Risk Overview
+        </h2>
+
+        <p class="section-description">
+            Prototype risk classification based on simulated water-quality
+            and community symptom data.
+        </p>
+
+        <div class="district-grid">
+
+            {% for district in districts %}
+
+            <div class="district-card">
+
+                <div class="district-top">
+
+                    <span class="district-name">
+                        {{ district.District }}
+                    </span>
+
+                    <span class="score">
+                        {{ district.Risk_Score }}/100
+                    </span>
+
+                </div>
+
+                <div class="progress-background">
+
+                    <div
+                        class="progress-bar
+                        {% if district.Risk_Level == 'HIGH' %}
+                            high-bar
+                        {% elif district.Risk_Level == 'MEDIUM' %}
+                            medium-bar
+                        {% else %}
+                            low-bar
+                        {% endif %}"
+                        style="width: {{ district.Risk_Score }}%;">
+                    </div>
+
+                </div>
+
+                {% if district.Risk_Level == "HIGH" %}
+
+                    <span class="badge badge-high">
+                        🚨 HIGH RISK
+                    </span>
+
+                {% elif district.Risk_Level == "MEDIUM" %}
+
+                    <span class="badge badge-medium">
+                        ⚠️ MEDIUM RISK
+                    </span>
+
+                {% else %}
+
+                    <span class="badge badge-low">
+                        ℹ️ LOW RISK
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SYSTEM FLOW ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            System Flow
+        </h2>
+
+        <p class="section-description">
+            How environmental and community health signals move through
+            the prototype.
+        </p>
+
+        <div class="flow-container">
+
+            <div class="flow-step">
+                <div class="flow-icon">💧</div>
+                <strong>Water Quality Data</strong>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step">
+                <div class="flow-icon">🏥</div>
+                <strong>Community Symptoms</strong>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step">
+                <div class="flow-icon">🧠</div>
+                <strong>Risk Analysis</strong>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step">
+                <div class="flow-icon">🚨</div>
+                <strong>Early Warning</strong>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="flow-step">
+                <div class="flow-icon">📱</div>
+                <strong>Community Notification</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DATA TABLE ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Water Quality & Risk Details
+        </h2>
+
+        <p class="section-description">
+            Environmental indicators and community symptom information
+            used by the prototype risk engine.
+        </p>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>District</th>
+                        <th>pH</th>
+                        <th>Fluoride</th>
+                        <th>Arsenic</th>
+                        <th>Iron</th>
+                        <th>Nitrate</th>
+                        <th>Total Cases</th>
+                        <th>Risk Level</th>
+                        <th>Alert</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for district in districts %}
+
+                    <tr>
+
+                        <td>
+                            <strong>{{ district.District }}</strong>
+                        </td>
+
+                        <td>{{ district.pH }}</td>
+
+                        <td>{{ district.Fluoride }}</td>
+
+                        <td>{{ district.Arsenic }}</td>
+
+                        <td>{{ district.Iron }}</td>
+
+                        <td>{{ district.Nitrate }}</td>
+
+                        <td>{{ district.Total_Cases }}</td>
+
+                        <td>
+
+                            {% if district.Risk_Level == "HIGH" %}
+
+                                <span class="badge badge-high">
+                                    HIGH
+                                </span>
+
+                            {% elif district.Risk_Level == "MEDIUM" %}
+
+                                <span class="badge badge-medium">
+                                    MEDIUM
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge badge-low">
+                                    LOW
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="send-button"
+                                onclick="prepareAlert(
+                                    '{{ district.District }}',
+                                    '{{ district.Risk_Level }}'
+                                )">
+
+                                📱 Send Alert
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMMUNITY ALERT CENTER ================= -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            Community Alert Center
+        </h2>
+
+        <p class="section-description">
+            Prototype messages generated according to the calculated
+            district risk level.
+        </p>
+
+        <div class="alert-grid">
+
+            <!-- LOW -->
+
+            <div class="alert-card alert-low">
+
+                <h3>
+                    ℹ️ Routine Monitoring
+                </h3>
+
+                <p>
+                    Current prototype risk level is LOW.
+                    Continue safe-water and hygiene practices.
+                </p>
+
+            </div>
+
+
+            <!-- MEDIUM -->
+
+            <div class="alert-card alert-medium">
+
+                <h3>
+                    ⚠️ Health Advisory
+                </h3>
+
+                <p>
+                    Increased monitoring is recommended.
+                    Use safe drinking water and follow hygiene precautions.
+                </p>
+
+            </div>
+
+
+            <!-- HIGH -->
+
+            <div class="alert-card alert-high">
+
+                <h3>
+                    🚨 Health Alert
+                </h3>
+
+                <p>
+                    Recent symptom reports and water-quality indicators
+                    show elevated risk in your area. Please avoid untreated
+                    drinking water, maintain proper hygiene, and seek
+                    medical attention if symptoms occur.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= NOTIFICATION INTEGRATION ================= -->
+
+    <section class="section">
+
+        <div class="info-card">
+
+            <h3>
+                📱 Notification Integration
+            </h3>
+
+            <p>
+                The prototype generates location-based warning messages
+                and provides a Send Alert action. A future SMS/WhatsApp
+                gateway can connect to this action to deliver alerts to
+                registered residents or health workers.
+            </p>
+
+            <br>
+
+            <p>
+                <strong>Current status:</strong>
+                Demo action only — no real SMS or WhatsApp message
+                is sent.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PROJECT OBJECTIVE ================= -->
+
+    <section class="section">
+
+        <div class="info-card">
+
+            <h3>
+                🎯 Project Objective
+            </h3>
+
+            <p>
+                Integrate environmental and community health signals
+                to support early detection of potential water-borne
+                disease outbreaks.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DISCLAIMER ================= -->
+
+    <section class="section">
+
+        <div class="disclaimer">
+
+            <strong>
+                ⚠️ Prototype Note:
+            </strong>
+
+            All displayed water-quality and symptom values are
+            simulated demonstration data. Risk thresholds are
+            prototype rules and are not official CGWB measurements
+            or clinical/public-health thresholds.
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast"></div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    Smart Community Health Monitoring •
+    College PBL Prototype
+
+    <br><br>
+
+    Simulated demonstration data •
+    Not an official government warning system
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    function prepareAlert(district, riskLevel) {
+
+        const toast = document.getElementById("toast");
+
+        let message = "";
+
+        if (riskLevel === "HIGH") {
+
+            message =
+                "📱 Alert prepared for " +
+                district +
+                " — HIGH risk message ready to send.";
+
+        }
+
+        else if (riskLevel === "MEDIUM") {
+
+            message =
+                "📱 Advisory prepared for " +
+                district +
+                " — MEDIUM risk message ready.";
+
+        }
+
+        else {
+
+            message =
+                "ℹ️ " +
+                district +
+                " is LOW risk — routine monitoring message prepared.";
+
+        }
+
+        toast.innerText = message;
+
+        toast.style.display = "block";
+
+        setTimeout(function() {
+
+            toast.style.display = "none";
+
+        }, 4000);
+
+    }
+
+</script>
+
+</body>
+</html>
